@@ -1,0 +1,32 @@
+from ._anvil_designer import Form1Template
+from anvil import *
+import anvil.server
+
+class Form1(Form1Template):
+  def __init__(self, **properties):
+    self.init_components(**properties)
+    # Mengubah tampilan awal
+    self.set_initial_styles()
+
+  def set_initial_styles(self):
+    # Mengubah warna latar belakang
+    self.background_color = "#f0f8ff"  # Warna latar belakang yang lebih cerah
+    # Mengubah font dan warna label
+    self.label_2.font_size = 18
+    self.label_2.text_color = "#333333"  # Warna teks yang lebih gelap
+    # Mengubah ukuran tombol
+    self.button_1.font_size = 16
+    self.button_1.background_color = "#4CAF50"  # Warna hijau untuk tombol
+    self.button_1.text_color = "white"  # Warna teks tombol
+    self.button_1.border_radius = 5  # Membuat sudut tombol lebih bulat
+
+  def button_1_click(self, **event_args):
+    """Ketika tombol 'Cek' diklik"""
+    if self.file_loader_1.file:
+      self.image_1.source = self.file_loader_1.file
+      result = anvil.server.call('classify_image', self.file_loader_1.file)
+      self.label_2.text = f"Bentuk terdeteksi: {result}"
+      self.label_2.text_color = "#007BFF"  # Mengubah warna teks hasil
+    else:
+      self.label_2.text = "Silakan upload gambar bentuk terlebih dahulu."
+      self.label_2.text_color = "red"  # Mengubah warna teks kesalahan
